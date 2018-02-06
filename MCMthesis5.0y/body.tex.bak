@@ -1,0 +1,175 @@
+\section{Introduction}
+\subsection{Problem Background}
+Sleep quality affect people’s daily life in a large degree for the mental states and daily energy depend on one’s sleep quality last night. However, the number of insomnia is large with the rate of insomnia rising now. Therefore, researching and analyzing the factors influenced sleep quality and the relationship between diagnosis and sleep feature are very important, for they can provide effective reference to the medical treatment.
+
+%Two major problems are discussed in this paper, which are:
+%\begin{itemize}
+%    \item Doing the first thing.
+%    \item Doing the second thing.
+%\end{itemize}
+
+\section{Assumptions}
+%A literatrue\cite{1} say something about this problem ...
+\begin{enumerate}[\bfseries 1.]
+    \item We do not take into account other factors that may influence sleep quality and diagnosis but the factors listed in the raw data.
+    \item We suppose that all the diagnosis are only decided according to the sleep features listed in the data,neglect the probability that other sleep features may affect the diagnosis.
+    \item To measure the importance of each attribute,we suppose that all the factors are independent.
+\end{enumerate}
+
+\section{The Models}
+\subsection{Question1}
+In combination with Linear Regression and Logical Regression, we regard question 1 as a mathematical classification problem.
+
+\begin{table}[h]
+    \begin{center}
+        \caption{three correlation coefficient}
+        \begin{tabular}{cc}
+            \toprule
+            \multicolumn{1}{m{3cm}}{\centering Symbol}
+            &\multicolumn{1}{m{8cm}}{\centering value}\\
+            \midrule
+            $Spearman$&0.004135\\
+            $Pearson$&1.363992\\
+            $Kendel$&0.003177\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+\begin{figure}[htbp]
+    \small
+    \centering
+    \includegraphics[width=9cm]{1.jpg}\\
+    \caption{no name}
+        \label{Ntt}
+\end{figure}
+
+First, we try to use correlation coefficient to indicate the Contribution Rate of the factors. However, the three correlation coefficient in science of statistics need premise and assumptions. Pearson Correlation Coefficient can be effectual when the parameters are linearly dependent, in addition Spearman Correlation Coefficient and Kendall Correlation Coefficient should satisfy the condition that curve monotonic increase.Then we obtain one counter example below.
+
+Above that, sex is the first weighting correlation. But the result is inaccuracy according to our actual experience, so we decide to adopt non-linear classification algorithm.
+
+We build the model as followed step:
+
+{\bf Step1.Data cleaning: }Based on Annex I, We preprocess the raw data to clean the incorrect and irrelevant data. We adopt two methods to clean the raw data:one is to digitize the variables, and the other is to delete the uncorrelated data. For the one, We use 0,1,2... to transfer the classification into number aiming at the category. For the other,we delete the uncorrelated data such as the features 'source' and 'number'. Finally, aiming at the missing data, we delete them directly for it has little weight among the whole data. The process and result are listed as Table 2:
+
+\begin{table}[h]
+    \begin{center}
+        \caption{Data Cleaning}
+        \begin{tabular}{llllc}
+            \toprule
+                \multicolumn{1}{c}{Feature}&
+                \multicolumn{1}{c}{Type}&
+                \multicolumn{1}{c}{Method}&
+                \multicolumn{1}{c}{Old Values}&
+                \multicolumn{1}{c}{New Values}\\
+            \midrule
+                Number&Continuous Numerical&Uncorrelated Deletion&151001001&-\\
+                Sex&Classification, String&Digitization&female&1\\
+                Sex&Classification, String&Digitization&male&0\\
+                Source&String&Uncorrelated Deletion&'Outpatient'&-\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+
+{\bf Step2.Train data: }We use Decision Tree to automatically detect the classification value of each candidate argument, and select the most meaningful factor and classification tree, therefore the divided groups has a higher consistency to reflect the attributes. We apply Information Gain Ratio to split the data set for the basic model and chi-square value and probability for the extended model, and compare the two model results to draw a more available and optimal conclusion.
+
+{\bf Basic model: }First, define the cleaned data, for which we select Sleep quality as the target variable and other features as classification variables.Here we adopt C5.0 classifier to build the decision tree. The definitions of variables are listed in Table 3 as follow:
+
+\begin{table}[h]
+    \begin{center}
+        \caption{Data Cleaning}
+        \begin{tabular}{llll}
+            \toprule
+                \multicolumn{1}{c}{Name}&
+                \multicolumn{1}{c}{Type}&
+                \multicolumn{1}{c}{Measure}&
+                \multicolumn{1}{c}{Role}\\
+            \midrule
+                Age&Numeric&Scale&Input\\
+                Sex&Numeric&Nominal&Input\\
+                Sleep quality&Numeric&Nominal&Target\\
+                Reliability&Numeric&Scale&Input\\
+                Psychoticism&Numeric&Scale&Input\\
+                Nervousness&Numeric&Scale&Input\\
+                Character&Numeric&Scale&Input\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+
+In this method, the meaning of the variables in the formula are listed as Table3. The information entropy can be calculated as :
+\begin{equation}
+Ent(D)=-{\sum_{k=1}^{|y|}{p_{k}log_{2}{p_{k}}}}
+\end{equation}
+
+Among this, the smaller is $Ent_{R}(D)$, the higher the purity of $D$. It illustrates that we can subdivide the data of sleep quality according to feature $R$. In this way, feature $R$ make the maximum impact to sleep quality when $Ent_{R}(D)$ reach the minimum.
+
+Then we suppose that sleep quality may be influenced by not only one feature but the different combinations of the features. Upon this, we suppose that feature $R$ have $V$ values ${R^1,R^2,...R^V}$, then we can divide $D$ into $V$ child classes for each child class contains all the sample values $R^v$ according to feature in $D$. Because of the different amount between different child classes, thus we give different weight $\frac{|D^V|}{|D|}$ to different child class. That is, the larger sample size of $R^V$ is, the greater the impact that feature $R$ influence on $D$.Then we have:
+\begin{equation}
+Gain(D,R)=Ent(D)-{\sum_{v=1}^{V}{\frac{|D^v|}{|D|}{Ent(D^v)}}}
+\end{equation}
+
+Among them, when $Gain(D,R)$ reach a lager value, it illustrates that we can obtain a purer sample by using feature $R$ to subdivide the data. However, when use information entropy to subdivide the data set, it may tend to select the characteristics with more values. In order to solve this problem, we optimize the model with Information Gain Ratio. Then we have:
+\begin{equation}
+Gain_{ratio(D,R)}={\frac{Gain(D,R)}{IV(R)}}
+\end{equation}
+\begin{equation}
+IV(R)=-{\sum_{v=1}^{V}{{\frac{|D^v|}{|D|}}{log_{2}{\frac{|D^v|}{|D|}}}}}
+\end{equation}
+
+Finally, we build a iteration tree depended on features. We know that different combination of the features have different effect on sleep quality, thus we can draw a conclusion that the feature which is closer to the root node affect sleep quality more, for the feature which is farther to the root node affect sleep quality less. The feature that isn’t contained in the combinations can be neglected.
+
+\begin{enumerate}[\bfseries 1.]
+    \item We do ...
+    \item We do ...
+    \item We do ...
+\end{enumerate}
+
+\section{Preparation of the Models}
+\subsection{Assumptions}
+
+\subsection{Notations}
+The primary notations used in this paper are listed in \textbf{Table \ref{Ntt}}.
+\begin{table}[h]
+    \begin{center}
+        \caption{Notations}
+        \begin{tabular}{cl}
+            \toprule
+            \multicolumn{1}{m{3cm}}{\centering Symbol}
+            &\multicolumn{1}{m{8cm}}
+              {\centering Definition}\\
+            \midrule
+            $A$&the first one\\
+            $b$&the second one\\
+            $\alpha$ &the last one\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+
+\section{The Models}
+
+\subsection{Model 1}
+\subsubsection{Detail 1 about Model 1}
+\begin{equation}
+    e^{i\theta}=\cos\theta+i\sin\theta.
+\end{equation}
+
+\section{Strengths and Weaknesses}
+\subsection{Strengths}
+\begin{itemize}
+    \item First one ...
+    \item Second one ...
+\end{itemize}
+
+\subsection{Weaknesses}
+\begin{itemize}
+    \item Only one ...
+ \end{itemize}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}  %引用部分标题（"Refenrence"）的重命名
+\bibitem{1}Elisa T. Lee, Oscar T. Survival Analysis in Public Health Research. \emph{Go.College of Public Health}, 1997(18):105-134.
+\bibitem{2}Wikipedia: Proportional hazards model. 2017.11.26. \texttt{\\https://en.wikipedia.org/wiki/Proportional\_{}hazards\_{}model}
+\end{thebibliography}
+

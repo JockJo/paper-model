@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Statement of the Problem}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Our work}{1}{subsection.1.2}
+\contentsline {section}{\numberline {2}Detailed Definitions and Assumptions}{1}{section.2}
+\contentsline {subsection}{\numberline {2.1}Detailed Definitions}{1}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Assumptions}{2}{subsection.2.2}
+\contentsline {section}{\numberline {3}NS-LSMS Model}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Part 1 :Basic NS Model}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Part 2 :Lanes traffic environment}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Part 3 :Sections traffic environment}{5}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Part 4 :Manual driving and self-driving}{6}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Manual driving}{6}{subsubsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Self-driving}{6}{subsubsection.3.4.2}
+\contentsline {section}{\numberline {4}Simulation with Matlab}{7}{section.4}
+\contentsline {section}{\numberline {5}Sensitivity Analysis}{7}{section.5}
+\contentsline {section}{\numberline {6}Conclusions}{7}{section.6}
+\contentsline {subsection}{\numberline {6.1}Results}{7}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Strengths of Model}{7}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Weaknesses of Model}{7}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Future Work/Discussion}{7}{subsection.6.4}
+\contentsline {section}{References}{7}{subsection.6.4}
+\contentsfinish 

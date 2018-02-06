@@ -1,0 +1,141 @@
+\section{Introduction}
+\subsection{Statement of the Problem}
+Nowadays,traffic capacity is limited by the number of lanes of roads in many regions of United States,hence self-driving and cooperating cars ha been proposed as a solution to increase capacity of highways without increasing number of lanes or roads.However,the cooperation between self-driving cars as well as the interaction between self-driving and non-self-driving vehicles are still not well understood.
+
+
+The Governor of the state of Washington has asked for analysis of the effects of allowing self-driving and cooperating cars on Interstates5,90,405 and State Route520,also give how do the effects change when the percentage of self-driving cars alter.In order to meet the demands,we improve...which is based on Cellular Automaton in order to describe the changing situation of traffic flow in the transportation network.
+
+\subsection{Our work}
+%Two major problems are discussed in this paper, which are:
+%\begin{itemize}
+%    \item Doing the first thing.
+%    \item Doing the second thing.
+%\end{itemize}
+
+
+\section{Detailed Definitions and Assumptions}
+%A literatrue\cite{1} say something about this problem ...
+\subsection{Detailed Definitions}
+The detailed definitions are listed as follows:
+
+
+\subsection{Assumptions}
+\begin{enumerate}[\bfseries 1.]
+ \item For conceptual clarification, this statement categorizes the operations of vehicle into 5 levels, from fully-manual (0) to fully-automated driving (4), depending on the level of automation.But in order to simplify the model,We divide the categories into two types,one is fully-automated driving,and the other is manual driving.
+ \item The limitation of velocity on the roads are assumed to be the same. In practice, there might be slight difference.
+\end{enumerate}
+
+\section{NS-LSE Model}
+In order to describe traffic capacity,we adopt NS method which is proposed by Nagel and Schreckenberg as our basic model.After some improvements,the current NS method can describe the non-linear phenomena such as metastable state and hysteresis in single lane traffic environment.
+
+Based on the available model,to consider the situation of transportation network in Washington,we take lanes traffic environment,sections traffic environment and experience into account.To meet the demand of the Governor of Washington,we build the NS-LSE Model to  express the traffic capacity in Washington that allows self-driving and cooperating cars on the roads then propose a optimum proposal.
+
+\subsection{Part1:Basic NS Model}
+We divide a L length road into several discrete cellulars which length is .Each cellular has two states denoted S that ranges from 0 to 1.Therein,0 means there is a car when 1 means no car.We use t to denote the velocity of each vehicle,for it values as 0,1,2...,.We set the time span of the simulation iteration is 1s.The rules of NS model are listed as follows:
+
+
+
+{\bf Acceleration rule: }When the actual gap between the n-th car and the neighbor foregoing car farther than the safe gap,that is $Ga{p_n}(t) > Ga{p_{safe,n}}(t)$ , the posterior car can accelerate with ${a_n}(t)$ acceleration  so as to run faster.During the driving process,the vehicle velocity ${v_{\max }}$ must not exceed the maximum velocity  in this lane also be less than the safe gap $Ga{p_{safe,n}}(t)$ distance from the neighbor foregoing car.Then we have:
+$${v_n}(t + 1) = \min ({v_n}(t) + {a_n}(t),{v_{\max }},Ga{p_n}(t))$$
+
+{\bf Randomization retardation rule: }Because the uncertainty factors in the road environments can cause the randomly change of vehicle velocity,we premise randomization retardation rule then deceleration rule and employ $p$ , ${a_n}(t)$ to denote randomization retardation probability and randomization deceleration.Then we have randomization retardation rule:
+$${v_n}(t + 1) = \max ({v_n}(t) - {a_n}(t),0)$$
+
+{\bf Deceleration rule: }When the actual gap between the n-th car and the neighbor foregoing car closer than the safe gap,that is $Ga{p_n}(t) < Ga{p_{safe,n}}(t)$ .In this situation,the posterior car should decelerate to ensure the traffic safety.We obtain the deceleration rule:
+$${v_n}(t + 1) = \min ({v_n}(t),{v_{safe,n}}(t))$$
+
+
+{\bf Location update rule: }After the update of vehicle velocity,we update the vehicle location subject to following rule.When the displacement farther than the length of the road section $L$ ,we remove this car and decrease the total vehicle number $N$ for it has left this section.Then we write the formulas to update the vehicle location and remove the car as follows:
+
+
+
+\begin{table}[h]
+    \begin{center}
+        \caption{Data Cleaning}
+        \begin{tabular}{llll}
+            \toprule
+                \multicolumn{1}{c}{Name}&
+                \multicolumn{1}{c}{Type}&
+                \multicolumn{1}{c}{Measure}&
+                \multicolumn{1}{c}{Role}\\
+            \midrule
+                Age&Numeric&Scale&Input\\
+                Sex&Numeric&Nominal&Input\\
+                Sleep quality&Numeric&Nominal&Target\\
+                Reliability&Numeric&Scale&Input\\
+                Psychoticism&Numeric&Scale&Input\\
+                Nervousness&Numeric&Scale&Input\\
+                Character&Numeric&Scale&Input\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+
+In this method, the meaning of the variables in the formula are listed as Table3. The information entropy can be calculated as :
+\begin{equation}
+Ent(D)=-{\sum_{k=1}^{|y|}{p_{k}log_{2}{p_{k}}}}
+\end{equation}
+
+Among this, the smaller is $Ent_{R}(D)$, the higher the purity of $D$. It illustrates that we can subdivide the data of sleep quality according to feature $R$. In this way, feature $R$ make the maximum impact to sleep quality when $Ent_{R}(D)$ reach the minimum.
+
+Then we suppose that sleep quality may be influenced by not only one feature but the different combinations of the features. Upon this, we suppose that feature $R$ have $V$ values ${R^1,R^2,...R^V}$, then we can divide $D$ into $V$ child classes for each child class contains all the sample values $R^v$ according to feature in $D$. Because of the different amount between different child classes, thus we give different weight $\frac{|D^V|}{|D|}$ to different child class. That is, the larger sample size of $R^V$ is, the greater the impact that feature $R$ influence on $D$.Then we have:
+\begin{equation}
+Gain(D,R)=Ent(D)-{\sum_{v=1}^{V}{\frac{|D^v|}{|D|}{Ent(D^v)}}}
+\end{equation}
+
+Among them, when $Gain(D,R)$ reach a lager value, it illustrates that we can obtain a purer sample by using feature $R$ to subdivide the data. However, when use information entropy to subdivide the data set, it may tend to select the characteristics with more values. In order to solve this problem, we optimize the model with Information Gain Ratio. Then we have:
+\begin{equation}
+Gain_{ratio(D,R)}={\frac{Gain(D,R)}{IV(R)}}
+\end{equation}
+\begin{equation}
+IV(R)=-{\sum_{v=1}^{V}{{\frac{|D^v|}{|D|}}{log_{2}{\frac{|D^v|}{|D|}}}}}
+\end{equation}
+
+Finally, we build a iteration tree depended on features. We know that different combination of the features have different effect on sleep quality, thus we can draw a conclusion that the feature which is closer to the root node affect sleep quality more, for the feature which is farther to the root node affect sleep quality less. The feature that isn’t contained in the combinations can be neglected.
+
+\begin{enumerate}[\bfseries 1.]
+    \item We do ...
+    \item We do ...
+    \item We do ...
+\end{enumerate}
+
+\section{Sensitivity Analysis}
+The primary notations used in this paper are listed in \textbf{Table \ref{Ntt}}.
+\begin{table}[h]
+    \begin{center}
+        \caption{Notations}
+        \begin{tabular}{cl}
+            \toprule
+            \multicolumn{1}{m{3cm}}{\centering Symbol}
+            &\multicolumn{1}{m{8cm}}
+              {\centering Definition}\\
+            \midrule
+            $A$&the first one\\
+            $b$&the second one\\
+            $\alpha$ &the last one\\
+            \bottomrule
+        \end{tabular}\label{Ntt}
+    \end{center}
+\end{table}
+
+\section{Strengths and Weaknesses}
+\subsection{Strengths}
+
+\begin{itemize}
+    \item Only one ...
+\end{itemize}
+
+\subsection{Weaknesses}
+\begin{itemize}
+    \item First one ...
+    \item Second one ...
+\end{itemize}
+
+\section{Conclusions and Discussion}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}  %引用部分标题（"Refenrence"）的重命名
+\bibitem{1}Elisa T. Lee, Oscar T. Survival Analysis in Public Health Research. \emph{Go.College of Public Health}, 1997(18):105-134.
+\bibitem{2}Wikipedia: Proportional hazards model. 2017.11.26. \texttt{\\https://en.wikipedia.org/wiki/Proportional\_{}hazards\_{}model}
+\end{thebibliography}
+

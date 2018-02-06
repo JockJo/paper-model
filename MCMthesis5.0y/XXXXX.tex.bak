@@ -1,0 +1,47 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{graphicx}   %使用宏包，用于加载图片
+\usepackage[50193]{MCMthesis}\problem{C}    %填写控制号、题号，年份不需要填（自动以当前电脑时间年份为准）
+\usepackage{palatino} %这个是COMAP官方杂志的字体，如不需要可注释掉（以使用默认字体）
+
+%设置图表标题与上下文的间距
+\setlength{\belowcaptionskip}{2pt}
+\setlength{\abovecaptionskip}{2pt}
+
+%目录显示自定义
+\usepackage{titlesec}
+\usepackage{titletoc}
+\setcounter{tocdepth}{2}    %目录显示到subsection(2),若要到subsubsection(3)请自改
+
+\usepackage[font=small,]{caption}   %使图表标题字号小一号
+\def\abstractname{}  %摘要标题
+\title{Effects of Sleep on Human Body}  %标题
+
+\begin{document}
+%----------以下是摘要部分----------
+\begin{abstract}\small\setlength\parskip{0.7\baselineskip}
+    Our basic model has two parts:  firstly using Decision Tree to subdivide the data of the sample then get the weight of the factors that influence sleep quality, Secondly using Logistic Regression to classify the sample about the diagnosis and sleep features. Thence we analyze the importance of each factor that may influence people’s sleep quality and the relation between diagnosis and sleep features, finally the results can provide some reference to the process of actual medical treatment.
+    
+    Our major assumptions toward the model are to suppose the target variable is only related to the variables contained in the raw data, and to suppose that each sample value is independent.
+    
+    First, we preprocess the raw data and plot a chart of sample distribution then find out the uneven property of the sample. We adopt non-linear algorithm Decision Tree with C5.0 to subdivide the data of the node and CHAID as an extended model which optimize the result. By analyzing the two trees we draw a conclusion that age is the most important factor to influence people’s sleep quality, among each age range the weight of factors are different.
+\end{abstract}
+
+%---------以下生成sheet页----------
+%\renewcommand{\baselinestretch}{0.6}\normalsize    %该语句可调整行距（数值为标准行距之倍数），对其后到再次修改前的部分有效，请自行使用
+\maketitle  %生成sheet页
+\thispagestyle{empty}   %去摘要页页脚
+\pagestyle{empty}       %去目录页页眉
+
+%---------以下生成目录----------
+\newpage
+\tableofcontents
+\newpage
+
+%---------以下生成正文----------
+\pagestyle{fancy}
+\setlength\parskip{0.8\baselineskip}  %调整段间距
+\setcounter{page}{1}    %从正文开始计页码
+\input{body.tex}    %正文及Reference内容均在body.tex中修改
+
+\end{document}
